@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Index
+{% endblock %}
+
+{% block main %}
+
+    <h4>Your tasks:</h4>
+    {% if tasks %}
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th class="text-start">Nr.</th>
+                    <th class="text-start" style="width: 50%">Task</th>
+                    <th class="text-centre">Deadline</th>
+                    <th class="text-centre">Completion</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!--Loop through the database entries to display them in this table -->
+                {% for task in tasks %}
+                    <tr>
+                        <td class="text-start">{{ loop.index }}</td>
+                        <td class="text-start">{{ task.task }}</td>
+                        <td class="text-centre">
+                            {% if task.deadline == None %}
+                                -
+                            {% else %}
+                                {{ task.deadline }}
+                            {% endif %}
+                        </td>
+                        <td class="text-centre">
+                            <form method="post" action="{{ url_for('task_completion') }}">
+                                <input type="hidden" name="task_id" value="{{ task.task_id }}">
+                                {% if task.completed == False %}
+                                    <button type="submit" name="submit_param" value="submit_value" class="btn btn-secondary">
+                                        Uncompleted
+                                    </button>
+                                {% else %}
+                                    <button type="submit" name="submit_param" value="submit_value" class="btn btn-success">
+                                        Completed
+                                    </button>
+                                {% endif %}
+                            </form>
+                        </td>
+                        <td>
+                            <form method="post" action="{{ url_for('edit_task') }}">
+                                <input type="hidden" name="task_id" value="{{ task.task_id }}">
+                                <input type="hidden" name="task" value="{{ task.task }}">
+                                <input type="hidden" name="deadline" value="{{ task.deadline }}">
+                                <button type="submit" name="submit_param" value="submit_value" class="btn btn-primary">
+                                    Edit
+                                </button>
+                            </form>
+                        </td>
+                        <td>
+                            <form method="post" action="{{ url_for('delete_task') }}">
+                                <input type="hidden" name="task_id" value="{{ task.task_id }}">
+                                <button type="submit" name="submit_param" value="submit_value" class="btn btn-danger">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>You currently don't have any tasks</p>
+    {% endif %}
+    <a href="{{ url_for('add_task') }}" class="btn btn-primary">Add new task</a>
+
+
+
+{% endblock %}

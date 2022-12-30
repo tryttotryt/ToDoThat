@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Edit task
+{% endblock %}
+
+{% block main %}
+    <form action="/update_task" method="post">
+        <input type="hidden" name="task_id" value="{{ task_id }}">
+        <div class="form-group mb-3">
+            <label>Edit your task</label>
+            <textarea autofocus class="form-control mx-auto w-auto" id="update_task" name="update_task" rows="5" value = "potato">{{ task }}</textarea>
+        </div>
+        <div class="form-group">
+            <input class="form-check-input" type="checkbox" id="deadline" name="deadline">
+            <label class="form-check-label" for="deadline">
+                Deadline (Optional)
+            </label>
+        </div>
+        <div class="form-group mb-3">
+            <input class="form-control mx-auto w-auto" id="date" name="date" placeholder="dd-mm-yyyy" type="date", value = "{{ deadline }}">
+        </div>
+        <button class="btn btn-primary" type="submit">Edit task</button>
+    </form>
+
+{% endblock %}
